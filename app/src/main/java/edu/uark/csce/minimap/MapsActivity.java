@@ -2,6 +2,7 @@ package edu.uark.csce.minimap;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.PolygonOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    public static final String MY_PREFS_NAME = "RGB";
     private GoogleMap mMap;
     Building[] buildings = {
             new Building("Mullins Library",
@@ -78,8 +80,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         if(buildings[position].isHeatmapAvailable())
         {
+            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+            int R = prefs.getInt("R", 0);
+            int G = prefs.getInt("G", 0);
+            int B = prefs.getInt("B", 0);
             //Not finished here, need to get the color from the database.
-            int heatShade = Color.argb(150,150, 150, 0);
+            int heatShade = Color.argb(150,R, G, B);
             PolygonOptions rectOptions = new PolygonOptions()
                     .add(
                             buildings[position].polygon[0],

@@ -21,12 +21,21 @@ import androidx.lifecycle.ViewModelProviders;
 import java.lang.reflect.Array;
 import java.util.List;
 
+import edu.uark.csce.minimap.Heatmap;
 import edu.uark.csce.minimap.MapsActivity;
 import edu.uark.csce.minimap.R;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    String[] test = {
+            "Mullins Library",
+            "Brough Dining Hall",
+            "JB-Hunt",
+            "The Union",
+            "Pat Walker",
+            "Campus Bookstore on Dickson"
+    };
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -34,14 +43,7 @@ public class DashboardFragment extends Fragment {
     {
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        String[] test = {
-                "Mullins Library",
-                "Brough Dining Hall",
-                "JB-Hunt",
-                "The Union",
-                "Pat Walker",
-                "Campus Bookstore on Dickson"
-        };
+
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
