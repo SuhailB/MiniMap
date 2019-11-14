@@ -17,10 +17,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent colorService = new Intent(this, ColorService.class);
-        startService(colorService);
-
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -37,6 +33,20 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Intent myService = new Intent(MainActivity.this, ColorService.class);
         stopService(myService);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent myService = new Intent(MainActivity.this, ColorService.class);
+        stopService(myService);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Intent colorService = new Intent(this, ColorService.class);
+        //startService(colorService);
     }
 }
 

@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String message = intent.getStringExtra("message");
             RED = intent.getIntExtra("RED", 0);
             GREEN = intent.getIntExtra("GREEN", 0);
-            BLUE = intent.getIntExtra("BLUE", 0);
+            BLUE = intent.getIntExtra("BLUE", 255);
             updateBuildingColor(mMap);
             Log.d("receiver", "Got message: " + RED + " " + GREEN + " " + BLUE);
         }
@@ -69,9 +70,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent colorService = new Intent(this, ColorService.class);
+        startService(colorService);
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setBuildingsEnabled(true);
         // Add a marker to the selected building location and move the camera
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
         mMap.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
@@ -92,6 +102,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void updateBuildingColor(GoogleMap mMap)
     {
         mMap.clear();
+        LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
+        mMap.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
         if (buildings[position].isHeatmapAvailable()) {
 
             //Not finished here, need to get the color from the database.
@@ -110,13 +122,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-
     @Override
     protected void onDestroy() {
-        // Unregister since the activity is about to be closed.
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onDestroy();
+        Intent myService = new Intent(MapsActivity.this, ColorService.class);
+        stopService(myService);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent myService = new Intent(MapsActivity.this, ColorService.class);
+        stopService(myService);
     }
 
     public void createBuildings()

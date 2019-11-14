@@ -26,7 +26,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ColorService extends Service {
-    Heatmap heatmap;
     int R;
     int G;
     int B;
@@ -39,19 +38,22 @@ public class ColorService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("Rest", "Testing the service out");
-        //Get Colors from JSON every minute
+        getJsonRequest();
+
+
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        //Get Colors from JSON every minute
+        handler.postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 getJsonRequest();
                 sendMessage();
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 10000);
+
             }
         },0);  //the time is in miliseconds
-
-        //sendMessage();
-
     }
 
 
@@ -117,12 +119,13 @@ public class ColorService extends Service {
     }
 
     private void sendMessage() {
-        Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
+
         Intent intent = new Intent(ACTION);
         // You can also include some extra data.
         intent.putExtra("RED", R);
         intent.putExtra("GREEN", G);
         intent.putExtra("BLUE", B);
+        Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
         LocalBroadcastManager.getInstance(c).sendBroadcast(intent);
     }
 }
