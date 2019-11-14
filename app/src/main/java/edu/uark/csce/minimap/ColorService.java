@@ -1,11 +1,16 @@
 package edu.uark.csce.minimap;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,25 +27,33 @@ import java.util.TimerTask;
 
 public class ColorService extends Service {
     Heatmap heatmap;
+    int R;
+    int G;
+    int B;
     private Timer timer = new Timer();
     public static final String MY_PREFS_NAME = "RGB";
+    final Context c = this;
+    public static final String ACTION = "colorGrabber";
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.e("Rest", "Testing the service out");
-
         //Get Colors from JSON every minute
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 getJsonRequest();
+                sendMessage();
                 handler.postDelayed(this, 5000);
             }
         },0);  //the time is in miliseconds
 
+        //sendMessage();
+
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -61,7 +74,10 @@ public class ColorService extends Service {
                     public void onResponse(JSONObject response) {
                         Log.e("Rest Response" , response.toString());
                         ArrayList<Integer> values = parseRGB(response.toString());
-                        heatmap = new Heatmap(values);
+                        //heatmap = new Heatmap(values);
+                        R = values.get(0);
+                        G = values.get(1);
+                        B = values.get(2);
                     }
                 },
                 new Response.ErrorListener() {
@@ -98,6 +114,16 @@ public class ColorService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+    }
+
+    private void sendMessage() {
+        Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
+        Intent intent = new Intent(ACTION);
+        // You can also include some extra data.
+        intent.putExtra("RED", R);
+        intent.putExtra("GREEN", G);
+        intent.putExtra("BLUE", B);
+        LocalBroadcastManager.getInstance(c).sendBroadcast(intent);
     }
 }
 

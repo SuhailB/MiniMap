@@ -1,10 +1,17 @@
 package edu.uark.csce.minimap;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,40 +26,39 @@ import com.google.android.gms.maps.model.PolygonOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     public static final String MY_PREFS_NAME = "RGB";
+    int RED;
+    int GREEN;
+    int BLUE;
     private GoogleMap mMap;
-    Building[] buildings = {
-            new Building("Mullins Library",
-                    36.0686,
-                    -94.1736,
-                    true,
-                    36.069150,
-                    -94.174346,
-                    36.069178,
-                    -94.173322,
-                    36.068206,
-                    -94.173303,
-                    36.068206,
-                    -94.174300),
-            new Building("Brough Dining Hall", 36.0662, -94.1752, false),
-            new Building("JB-Hunt", 36.066052, -94.173755,false),
-            new Building("The Union", 36.082157, -94.171852, false),
-            new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
-            new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
-    };
-
+    Building[] buildings;
     int position;
+
+    public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            RED = intent.getIntExtra("RED", 0);
+            GREEN = intent.getIntExtra("GREEN", 0);
+            BLUE = intent.getIntExtra("BLUE", 0);
+            updateBuildingColor(mMap);
+            Log.d("receiver", "Got message: " + RED + " " + GREEN + " " + BLUE);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.ACTION));
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        createBuildings();
         mapFragment.getMapAsync(this);
         position = getIntent().getExtras().getInt("POSITION");
-    }
 
+    }
 
     /**
      * Manipulates the map once available.
@@ -73,19 +79,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(buildingLocation)      // Sets the center of the map to location user
-                .zoom(17)                   // Sets the zoom
+                .zoom(18)                   // Sets the zoom
                 .bearing(90)                // Sets the orientation of the camera to east
                 .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        if(buildings[position].isHeatmapAvailable())
-        {
-            SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-            int R = prefs.getInt("R", 0);
-            int G = prefs.getInt("G", 0);
-            int B = prefs.getInt("B", 0);
+        updateBuildingColor(mMap);
+
+    }
+
+
+    public void updateBuildingColor(GoogleMap mMap)
+    {
+        mMap.clear();
+        if (buildings[position].isHeatmapAvailable()) {
+
             //Not finished here, need to get the color from the database.
-            int heatShade = Color.argb(150,R, G, B);
+            int heatShade = Color.argb(150, RED, GREEN, BLUE);
+            int test = Color.rgb(2, 4, 155);
             PolygonOptions rectOptions = new PolygonOptions()
                     .add(
                             buildings[position].polygon[0],
@@ -94,7 +105,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             buildings[position].polygon[3]
                     )
                     .fillColor(heatShade);
-            Polygon polygon = mMap.addPolygon(rectOptions);
+            mMap.addPolygon(rectOptions);
         }
+
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    public void createBuildings()
+    {
+        buildings = new Building[]{
+        new Building("Mullins Library",
+                36.0686,
+                -94.1736,
+                true,
+                36.069150,
+                -94.174346,
+                36.069178,
+                -94.173322,
+                36.068206,
+                -94.173303,
+                36.068206,
+                -94.174300),
+                new Building("Brough Dining Hall", 36.0662, -94.1752, false),
+                new Building("JB-Hunt", 36.066052, -94.173755, false),
+                new Building("The Union", 36.082157, -94.171852, false),
+                new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
+                new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
+    };
     }
 }
