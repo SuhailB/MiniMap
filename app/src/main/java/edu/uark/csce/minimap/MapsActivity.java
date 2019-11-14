@@ -21,6 +21,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             new Building("JB-Hunt", 36.066052, -94.173755,false),
             new Building("The Union", 36.082157, -94.171852, false),
             new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
+            new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
 
     };
 

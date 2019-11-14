@@ -40,7 +40,7 @@ public class DashboardFragment extends Fragment {
                 "JB-Hunt",
                 "The Union",
                 "Pat Walker",
-                "Starbucks"
+                "Campus Bookstore on Dickson"
         };
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
