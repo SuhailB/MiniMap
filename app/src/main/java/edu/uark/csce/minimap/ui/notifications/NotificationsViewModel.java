@@ -23,7 +23,6 @@ public class  NotificationsViewModel extends ViewModel {
         this.loginResultCallbacks = loginResultCallbacks;
         this.user = new User();
     }
-    
 
     //Write method to get Email from EditText and set to user
     public TextWatcher getEmailTextWatcher()
