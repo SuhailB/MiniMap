@@ -20,8 +20,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import java.lang.reflect.Array;
 import java.util.List;
-
-import edu.uark.csce.minimap.Heatmap;
 import edu.uark.csce.minimap.MapsActivity;
 import edu.uark.csce.minimap.R;
 
