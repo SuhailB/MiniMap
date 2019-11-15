@@ -1,14 +1,15 @@
 package edu.uark.csce.minimap;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +26,27 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        //this is a git comment test12
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent myService = new Intent(MainActivity.this, ColorService.class);
+        stopService(myService);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent myService = new Intent(MainActivity.this, ColorService.class);
+        stopService(myService);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Intent colorService = new Intent(this, ColorService.class);
+        //startService(colorService);
+    }
 }
+
