@@ -3,7 +3,6 @@ package edu.uark.csce.minimap;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -11,9 +10,22 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Building[] buildings = {
+            new Building("Mullins Library", 36.0686, -94.1736, false),
+            new Building("Brough Dining Hall", 36.0662, -94.1752, false),
+            new Building("JB-Hunt", 36.066052, -94.173755,false),
+            new Building("The Union", 36.082157, -94.171852, false),
+            new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
+            new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
+
+    };
+
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        position = getIntent().getExtras().getInt("POSITION");
     }
 
 
@@ -38,10 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Add a marker to the selected building location and move the camera
+        LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
+        mMap.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(buildingLocation));
     }
 }
