@@ -50,7 +50,7 @@ public class ColorService extends Service {
             {
                 getJsonRequest();
                 sendMessage();
-                handler.postDelayed(this, 10000);
+			handler.postDelayed(this, 10000);
 
             }
         },0);  //the time is in miliseconds
