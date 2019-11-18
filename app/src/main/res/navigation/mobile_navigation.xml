@@ -22,4 +22,10 @@
         android:name="edu.uark.csce.minimap.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_building"
+        android:name="edu.uark.csce.minimap.ui.dashboard.BuildingDetailsFragment"
+        android:label="Building"
+        tools:layout="@layout/building_details_fragment" />
 </navigation>
