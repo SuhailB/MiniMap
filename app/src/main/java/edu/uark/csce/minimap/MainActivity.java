@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //Intent colorService = new Intent(this, ColorService.class);
-        //startService(colorService);
+        Intent colorService = new Intent(this, ColorService.class);
+        startService(colorService);
     }
 }
 
