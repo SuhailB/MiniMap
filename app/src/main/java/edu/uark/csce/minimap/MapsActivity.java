@@ -139,24 +139,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void createBuildings()
     {
-        buildings = new Building[]{
-        new Building("Mullins Library",
-                36.0686,
-                -94.1736,
-                true,
-                36.069150,
-                -94.174346,
-                36.069178,
-                -94.173322,
-                36.068206,
-                -94.173303,
-                36.068206,
-                -94.174300),
-                new Building("Brough Dining Hall", 36.0662, -94.1752, false),
-                new Building("JB-Hunt", 36.066052, -94.173755, false),
-                new Building("The Union", 36.082157, -94.171852, false),
-                new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
-                new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
-    };
+//        buildings = new Building[]{
+//        new Building("Mullins Library",
+//                36.0686,
+//                -94.1736,
+//                true,
+//                36.069150,
+//                -94.174346,
+//                36.069178,
+//                -94.173322,
+//                36.068206,
+//                -94.173303,
+//                36.068206,
+//                -94.174300),
+//                new Building("Brough Dining Hall", 36.0662, -94.1752, false),
+//                new Building("JB-Hunt", 36.066052, -94.173755, false),
+//                new Building("The Union", 36.082157, -94.171852, false),
+//                new Building("Pat Walker: Health Center", 36.070790, -94.176020, false),
+//                new Building("Campus Bookstore on Dickson", 36.066760, -94.167390, false)
+//    };
     }
 }
