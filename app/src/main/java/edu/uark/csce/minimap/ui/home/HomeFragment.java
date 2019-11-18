@@ -226,4 +226,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public void onMyLocationClick(@NonNull Location location) {
         NavHostFragment.findNavController(this).navigate(R.id.navigation_notifications);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
+    }
 }
