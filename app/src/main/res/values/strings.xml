@@ -4,6 +4,9 @@
     <string name="title_dashboard">Buildings</string>
     <string name="title_notifications">Chat</string>
     <string name="title_activity_maps">Map</string>
+    <string name="name">Name: </string>
+    <string name="email">Email: </string>
+    <string name="check">Check Details</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
