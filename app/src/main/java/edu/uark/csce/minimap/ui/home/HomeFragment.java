@@ -66,7 +66,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
             RED = intent.getIntExtra("RED", 0);
             GREEN = intent.getIntExtra("GREEN", 0);
             BLUE = intent.getIntExtra("BLUE", 255);
@@ -145,7 +144,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         map.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
 
 
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
+       map.moveCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(buildingLocation)      // Sets the center of the map to location user
@@ -226,5 +225,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onMyLocationClick(@NonNull Location location) {
         NavHostFragment.findNavController(this).navigate(R.id.navigation_notifications);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mMessageReceiver);
     }
 }

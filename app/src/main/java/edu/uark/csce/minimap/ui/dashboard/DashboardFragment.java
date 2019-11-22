@@ -43,12 +43,12 @@ public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
     String[] test = {
-            "Mullins Library",
-            "Brough Dining Hall",
-            "JB-Hunt",
-            "The Union",
-            "Pat Walker",
-            "Campus Bookstore on Dickson"
+            "Mullins Library                                                                      ",
+            "Brough Dining Hall                                                                   ",
+            "JB-Hunt                                                                              ",
+            "The Union                                                                            ",
+            "Pat Walker                                                                           ",
+            "Campus Bookstore on Dickson                                                           "
     };
 
 
@@ -82,10 +82,6 @@ public class DashboardFragment extends Fragment {
                 NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.navigation_building, data);
 
-//
-//                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-//                intent.putExtra("POSITION", i);
-//                startActivity(intent);
             }
         });
         ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
