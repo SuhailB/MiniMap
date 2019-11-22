@@ -33,9 +33,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
+
         holder.name.setText(profiles.get(position).getName());
         holder.email.setText(profiles.get(position).getEmail());
         Picasso.get().load(profiles.get(position).getProfilePic()).into(holder.profilePic);
+
+
     }
 
     @Override
