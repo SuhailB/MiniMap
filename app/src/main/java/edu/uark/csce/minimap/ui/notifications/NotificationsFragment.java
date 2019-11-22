@@ -44,7 +44,7 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
+//        final TextView textView = root.findViewById(R.id.text_notifications);
 //        int num = getArguments().getInt("POS");
 //        Log.e("POS", String.valueOf(num));
 //        notificationsViewModel.getText().observe(this, new Observer<String>() {

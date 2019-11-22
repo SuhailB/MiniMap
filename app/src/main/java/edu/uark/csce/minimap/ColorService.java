@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class ColorService extends Service {
     int R;
     int G;
     int B;
+    int device_count;
     private Timer timer = new Timer();
     public static final String MY_PREFS_NAME = "RGB";
     final Context c = this;
@@ -80,6 +82,12 @@ public class ColorService extends Service {
                         R = values.get(0);
                         G = values.get(1);
                         B = values.get(2);
+                        try {
+                            device_count = response.getInt("device_name");
+                            Log.e("device Count", device_count+" People");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -125,6 +133,7 @@ public class ColorService extends Service {
         intent.putExtra("RED", R);
         intent.putExtra("GREEN", G);
         intent.putExtra("BLUE", B);
+        intent.putExtra("device_count", device_count);
         Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
         LocalBroadcastManager.getInstance(c).sendBroadcast(intent);
     }
