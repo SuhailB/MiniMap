@@ -19,11 +19,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.net.URI;
 
 import edu.uark.csce.minimap.R;
 
@@ -38,6 +40,7 @@ public class CreateNewPost extends AppCompatActivity {
     ProgressDialog progressDialog;
     StorageReference storageReference;
     DatabaseReference databaseReference;
+    private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class CreateNewPost extends AppCompatActivity {
         btnUpload= (Button)findViewById(R.id.btn_upload);
         etContent = (EditText)findViewById(R.id.et_content);
         ivLoadPicture = (ImageView)findViewById(R.id.iv_loadpicture);
+        editText = (EditText) findViewById(R.id.editText);
         progressDialog = new ProgressDialog(CreateNewPost.this);// context name as per your project name
 
 
@@ -102,6 +106,20 @@ public class CreateNewPost extends AppCompatActivity {
     }
 
 
+//    public void downloadImage(Uri imageURI){
+//        if (FilePathUri != null) {
+//
+//            progressDialog.setTitle("Image is Downloading...");
+//            progressDialog.show();
+//            StorageReference storageReference2 = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+//            FileDownloadTask imageFile = storageReference2.getFile(FilePathUri);
+//
+//        else {
+//
+//            Toast.makeText(getApplicationContext(), "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
+//
+//        }
+//    }
     public void UploadImage() {
 
         if (FilePathUri != null) {
@@ -118,9 +136,10 @@ public class CreateNewPost extends AppCompatActivity {
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             @SuppressWarnings("VisibleForTests")
-                            uploadinfo imageUploadInfo = new uploadinfo(TempImageName, taskSnapshot.getUploadSessionUri().toString());
-                            String ImageUploadId = databaseReference.push().getKey();
-                            databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                            String postText = editText.getText().toString();
+                            long currentTime = System.currentTimeMillis();
+                            Post post = new Post(postText, currentTime, "img", "url", null);
+                            databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
                         }
                     });
         }

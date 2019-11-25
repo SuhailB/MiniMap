@@ -53,8 +53,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
         public ProfileViewHolder(View itemView){
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            email = (TextView) itemView.findViewById(R.id.email);
+            name = (TextView) itemView.findViewById(R.id.postText);
+//            email = (TextView) itemView.findViewById(R.id.email);
             profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
         }
     }
