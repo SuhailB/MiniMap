@@ -105,10 +105,10 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        storageReference = FirebaseStorage.getInstance().getReference("Images");
+        storageReference = FirebaseStorage.getInstance().getReference("Image");
         progressDialog = new ProgressDialog(getContext());
 
-        reference = FirebaseDatabase.getInstance().getReference("Images");
+        reference = FirebaseDatabase.getInstance().getReference("Image");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -165,6 +165,8 @@ public class NotificationsFragment extends Fragment {
                 uploadPost(currentTime);
                 uploadImage(currentTime);
                 downloadImage(String.valueOf(currentTime));
+//                downloadImage("1574894291150");
+
             }
         });
 
@@ -236,7 +238,7 @@ public class NotificationsFragment extends Fragment {
     private void uploadPost(long currentTime){
         String postText = editText.getText().toString();
         Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null);
-        databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
+        databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
     }
     private void uploadImage(long currentTime) {
 
@@ -268,7 +270,7 @@ public class NotificationsFragment extends Fragment {
 //            progressDialog.show();
             try {
                 StorageReference ref = storageReference.child(currentTime + ".jpg");
-                final File localFile = File.createTempFile("images", "jpg");
+                final File localFile = File.createTempFile("image", "jpg");
                 ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {

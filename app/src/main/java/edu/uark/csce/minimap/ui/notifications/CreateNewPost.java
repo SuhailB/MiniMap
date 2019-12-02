@@ -46,8 +46,8 @@ public class CreateNewPost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_post);
 
-        storageReference = FirebaseStorage.getInstance().getReference("Images");
-        databaseReference = FirebaseDatabase.getInstance().getReference("Images");
+        storageReference = FirebaseStorage.getInstance().getReference("Image");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Image");
         btnUpload= (Button)findViewById(R.id.btn_upload);
         etContent = (EditText)findViewById(R.id.et_content);
         ivLoadPicture = (ImageView)findViewById(R.id.iv_loadpicture);
@@ -139,7 +139,7 @@ public class CreateNewPost extends AppCompatActivity {
                             String postText = editText.getText().toString();
                             long currentTime = System.currentTimeMillis();
                             Post post = new Post(postText, currentTime, "img", "url", null);
-                            databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
+                            databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
                         }
                     });
         }
