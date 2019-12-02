@@ -65,6 +65,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    holder.image.getLayoutParams().width = 0;
                     Toast.makeText(context, "Download Failed", Toast.LENGTH_LONG).show();
                 }
             });

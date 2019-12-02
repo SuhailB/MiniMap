@@ -149,7 +149,6 @@ public class NotificationsFragment extends Fragment {
                 } catch(IOException e){
 
                 }
-//                downloadImage("1574655410859");
 
             }
         });
@@ -164,13 +163,11 @@ public class NotificationsFragment extends Fragment {
                 long currentTime = System.currentTimeMillis();
                 uploadPost(currentTime);
                 uploadImage(currentTime);
-                downloadImage(String.valueOf(currentTime));
+//                downloadImage(String.valueOf(currentTime));
             }
         });
 
         imageView = (ImageView) root.findViewById(R.id.image);
-//        downloadImage("1574657596663");
-//        downloadImage("1574707586834");
 
         return root;
 
@@ -240,52 +237,53 @@ public class NotificationsFragment extends Fragment {
     }
     private void uploadImage(long currentTime) {
 
-        currentPhotoPath = resizeAndCompressImageBeforeSend(getContext(), currentPhotoPath,currentTime+".jpg");
-        Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
-        if (imageUri != null) {
+        if(currentPhotoPath!=null) {
+            currentPhotoPath = resizeAndCompressImageBeforeSend(getContext(), currentPhotoPath, currentTime + ".jpg");
+            Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
+            if (imageUri != null) {
 
-            progressDialog.setTitle("Image is Uploading...");
-            progressDialog.show();
+                progressDialog.setTitle("Image is Uploading...");
+                progressDialog.show();
 
-            storageReference.child(currentTime + ".jpg").putFile(imageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-                        }
-                    });
-        }
-        else {
+                storageReference.child(currentTime + ".jpg").putFile(imageUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            }
+                        });
+            } else {
 
-            Toast.makeText(getContext(), "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
 
-        }
-    }
-    private void downloadImage(String currentTime) {
-
-//            progressDialog.setTitle("Image is Downloading...");
-//            progressDialog.show();
-            try {
-                StorageReference ref = storageReference.child(currentTime + ".jpg");
-                final File localFile = File.createTempFile("images", "jpg");
-                ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        imageView.setImageBitmap(my_image);
-                        Toast.makeText(getActivity(), "Download Succeeded", Toast.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Download Failed", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }catch(IOException e){
-                Toast.makeText(getActivity(), "File Failed", Toast.LENGTH_LONG).show();
             }
+        }
     }
+//    private void downloadImage(String currentTime) {
+//
+////            progressDialog.setTitle("Image is Downloading...");
+////            progressDialog.show();
+//            try {
+//                StorageReference ref = storageReference.child(currentTime + ".jpg");
+//                final File localFile = File.createTempFile("images", "jpg");
+//                ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                        my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+//                        imageView.setImageBitmap(my_image);
+//                        Toast.makeText(getActivity(), "Download Succeeded", Toast.LENGTH_LONG).show();
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getActivity(), "Download Failed", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }catch(IOException e){
+//                Toast.makeText(getActivity(), "File Failed", Toast.LENGTH_LONG).show();
+//            }
+//    }
 
     public static String resizeAndCompressImageBeforeSend(Context context, String filePath, String fileName){
         final int MAX_IMAGE_SIZE = 700 * 1024; // max final file size in kilobytes
