@@ -24,6 +24,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -138,10 +139,19 @@ public class CreateNewPost extends AppCompatActivity {
                             @SuppressWarnings("VisibleForTests")
                             String postText = editText.getText().toString();
                             long currentTime = System.currentTimeMillis();
-                            Post post = new Post(postText, currentTime, "img", "url", null);
+                            Post post = new Post(postText, currentTime, "img", "url", null, null);
                             databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
                         }
                     });
+
+//            File fdelete = new File(FilePathUri.getPath());
+//            if (fdelete.exists()) {
+//                if (fdelete.delete()) {
+//                    System.out.println("file Deleted :" + FilePathUri.getPath());
+//                } else {
+//                    System.out.println("file not Deleted :" + FilePathUri.getPath());
+//                }
+//            }
         }
         else {
 

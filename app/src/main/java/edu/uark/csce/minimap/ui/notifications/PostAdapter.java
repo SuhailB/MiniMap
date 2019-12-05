@@ -33,6 +33,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private Bitmap my_image;
     private StorageReference storageReference;
 
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
     public PostAdapter(Context c, ArrayList<Post> p)
     {
         context = c;
@@ -42,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        storageReference = FirebaseStorage.getInstance().getReference("Images");
+        storageReference = FirebaseStorage.getInstance().getReference("Image");
         return new PostViewHolder(LayoutInflater.from(context).inflate(R.layout.cardview, parent,false));
     }
 
@@ -65,6 +74,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    holder.image.getLayoutParams().width = 0;
                     Toast.makeText(context, "Download Failed", Toast.LENGTH_LONG).show();
                 }
             });
@@ -93,6 +103,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             postText = (TextView) itemView.findViewById(R.id.postText);
 //            imageURL = (TextView) itemView.findViewById(R.id.email);
             image = (ImageView) itemView.findViewById(R.id.profilePic);
+
+             itemView.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     if(mListener != null)
+                     {
+                         int position = getAdapterPosition();
+
+                         if(position != RecyclerView.NO_POSITION){
+                             mListener.onItemClick(position);
+                         }
+                     }
+                 }
+             });
         }
     }
 }
