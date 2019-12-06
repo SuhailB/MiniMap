@@ -132,12 +132,12 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                                 p.setFile(localFile);
 //                                my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
 //                                p.setImage(my_image);
-                                Toast.makeText(getContext(), "image bitmap to post instance", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getContext(), "image bitmap to post instance", Toast.LENGTH_LONG).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), "Download Failed", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getContext(), "Download Failed", Toast.LENGTH_LONG).show();
                             }
                         });
                     }catch(IOException e){
@@ -190,9 +190,11 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
             public void onClick(View v) {
 
                 long currentTime = System.currentTimeMillis();
-                uploadPost(currentTime);
-                uploadImage(currentTime);
+                if(!editText.getText().toString().isEmpty()) {
+                    uploadPost(currentTime);
+                    uploadImage(currentTime);
 //                downloadImage(String.valueOf(currentTime));
+                }
             }
         });
 

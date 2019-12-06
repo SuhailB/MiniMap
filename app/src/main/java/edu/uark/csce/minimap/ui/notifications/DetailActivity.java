@@ -42,8 +42,11 @@ public class DetailActivity extends AppCompatActivity {
        // Picasso.get().load(image).into(imageView);
         textView.setText(textContent);
 
-        my_image = BitmapFactory.decodeFile(file.getAbsolutePath());
-        imageView.setImageBitmap(my_image);
+        if(file != null){
+            my_image = BitmapFactory.decodeFile(file.getAbsolutePath());
+            imageView.setImageBitmap(my_image);
+        }
+
 
 
 
