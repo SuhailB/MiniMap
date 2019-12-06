@@ -32,7 +32,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import edu.uark.csce.minimap.MainActivity;
-import edu.uark.csce.minimap.MapsActivity;
 import edu.uark.csce.minimap.R;
 
 
