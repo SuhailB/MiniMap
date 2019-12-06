@@ -33,9 +33,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
     @Override
     public void onBindViewHolder(@NonNull ProfileViewHolder holder, int position) {
+
         holder.name.setText(profiles.get(position).getName());
         holder.email.setText(profiles.get(position).getEmail());
         Picasso.get().load(profiles.get(position).getProfilePic()).into(holder.profilePic);
+
+
     }
 
     @Override
@@ -50,8 +53,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ProfileV
 
         public ProfileViewHolder(View itemView){
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            email = (TextView) itemView.findViewById(R.id.email);
+            name = (TextView) itemView.findViewById(R.id.postText);
+//            email = (TextView) itemView.findViewById(R.id.email);
             profilePic = (ImageView) itemView.findViewById(R.id.profilePic);
         }
     }
