@@ -56,7 +56,9 @@ public class BuildingDetailsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.ACTION));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.AXCIOM));
+
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return inflater.inflate(R.layout.building_details_fragment, container, false);
     }
