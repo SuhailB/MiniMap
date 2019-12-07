@@ -12,7 +12,7 @@
         android:text="View Map" />
 
     <TextView
-        android:id="@+id/people_count"
+        android:id="@+id/lbl_your_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="50 People" />

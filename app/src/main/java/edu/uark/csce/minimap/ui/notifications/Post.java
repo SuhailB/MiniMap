@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.File;
+
 @IgnoreExtraProperties
 public class Post {
 
@@ -12,17 +14,19 @@ public class Post {
     private String imageName;
     private String imageURL;
     private Bitmap image;
+    private File file;
 //    private boolean permission;
 
     public Post() {
     }
 
-    public Post(String text, long time, String imageName, String imageURL, Bitmap image) {
+    public Post(String text, long time, String imageName, String imageURL, Bitmap image, File file) {
         this.text = text;
         this.time = time;
         this.imageName = imageName;
         this.imageURL = imageURL;
         this.image = image;
+        this.file = file;
 //        this.permission = permission;
     }
 
@@ -66,6 +70,13 @@ public class Post {
         this.image = image;
     }
 
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
 //    public String getPostPic() {
 //        return PostPic;
 //    }
