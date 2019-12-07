@@ -13,6 +13,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
         app:layout_constraintBottom_toTopOf="@id/fabtn_addition"
+<<<<<<< HEAD
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,5 +57,50 @@
         app:layout_constraintEnd_toStartOf="@id/fabtn_addition"
         />
 
+=======
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabtn_addition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_action_addition"
+        app:backgroundTint="@color/androidGreen"
+        />
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintHorizontal_weight="4"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send"
+        />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="->"
+        app:layout_constraintHorizontal_weight="1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toEndOf="@id/editText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fabtn_addition"
+        />
+
+>>>>>>> a935ee34bc0e94e2ab4ed596fff8fb9d12075d9b
 
 </androidx.constraintlayout.widget.ConstraintLayout>
