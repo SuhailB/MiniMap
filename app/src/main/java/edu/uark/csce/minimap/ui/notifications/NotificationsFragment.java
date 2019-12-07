@@ -1,33 +1,27 @@
 package edu.uark.csce.minimap.ui.notifications;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,16 +43,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
-import edu.uark.csce.minimap.Profile;
-import edu.uark.csce.minimap.ProfileAdapter;
 import edu.uark.csce.minimap.R;
 
 import static android.app.Activity.RESULT_OK;
-import static edu.uark.csce.minimap.ui.notifications.CreateNewPost.IMAGE_REQUEST_CODE;
 
 public class NotificationsFragment extends Fragment implements PostAdapter.OnItemClickListener {
 
@@ -90,20 +79,9 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-//        final TextView textView = root.findViewById(R.id.text_notifications);
-//        int num = getArguments().getInt("POS");
-//        Log.e("POS", String.valueOf(num));
-//        notificationsViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-        //        View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
 
         recyclerView = (RecyclerView) root.findViewById(R.id.myRecyclerView);
@@ -114,6 +92,8 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         progressDialog = new ProgressDialog(getContext());
 
         reference = FirebaseDatabase.getInstance().getReference("Image");
+
+
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -166,12 +146,6 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         floatingActionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
-
-//                    Intent intent = new Intent();
-//                    intent.setType("image/*");
-//                    intent.setAction(Intent.ACTION_GET_CONTENT);
-//                    startActivityForResult(Intent.createChooser(intent, "Select Image"), IMAGE_REQUEST_CODE);
 
                 try{
                     dispatchTakePicIntent();
