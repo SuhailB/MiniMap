@@ -26,9 +26,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ColorService extends Service {
+<<<<<<< Updated upstream
     int R;
     int G;
     int B;
+=======
+    int primeR, axciomR;
+    int primeG, axciomG;
+    int primeB, axciomB;
+    int primeCount, axciomCount;
+>>>>>>> Stashed changes
     private Timer timer = new Timer();
     public static final String MY_PREFS_NAME = "RGB";
     final Context c = this;
@@ -77,9 +84,47 @@ public class ColorService extends Service {
                         Log.e("Rest Response" , response.toString());
                         ArrayList<Integer> values = parseRGB(response.toString());
                         //heatmap = new Heatmap(values);
+<<<<<<< Updated upstream
                         R = values.get(0);
                         G = values.get(1);
                         B = values.get(2);
+=======
+                        primeR = values.get(0);
+                        primeG = values.get(1);
+                        primeB = values.get(2);
+                        primeCount = values.get(3);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Rest Response" , error.toString());
+                    }
+                }
+        );
+
+        requestQueue.add(objectRequest);
+    }
+
+    public void getAxciomRequest()
+    {
+        String url = "http://10.5.54.42/axciom.json";
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonObjectRequest objectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("Rest Response" , response.toString());
+                        ArrayList<Integer> values = parseRGB(response.toString());
+                        //heatmap = new Heatmap(values);
+                        axciomR = values.get(0);
+                        axciomG = values.get(1);
+                        axciomB = values.get(2);
+                        axciomCount = values.get(3);
+>>>>>>> Stashed changes
                     }
                 },
                 new Response.ErrorListener() {
@@ -118,15 +163,39 @@ public class ColorService extends Service {
 
     }
 
+<<<<<<< Updated upstream
     private void sendMessage() {
+=======
+    private void sendPrimeMessage() {
+
+        Intent primeIntent = new Intent(PRIME);
+        // You can also include some extra data.
+        primeIntent.putExtra("RED", primeR);
+        primeIntent.putExtra("GREEN", primeG);
+        primeIntent.putExtra("BLUE", primeB);
+        primeIntent.putExtra("PRIMECOUNT", primeCount);
+        Log.d("sender", "Broadcasting message: " + primeR + " " + primeG + " " + primeB);
+        LocalBroadcastManager.getInstance(c).sendBroadcast(primeIntent);
+    }
+>>>>>>> Stashed changes
 
         Intent intent = new Intent(ACTION);
         // You can also include some extra data.
+<<<<<<< Updated upstream
         intent.putExtra("RED", R);
         intent.putExtra("GREEN", G);
         intent.putExtra("BLUE", B);
         Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
         LocalBroadcastManager.getInstance(c).sendBroadcast(intent);
+=======
+        axciomIntent.putExtra("RED", axciomR);
+        axciomIntent.putExtra("GREEN", axciomG);
+        axciomIntent.putExtra("BLUE", axciomB);
+        axciomIntent.putExtra("AXCIOMCOUNT", axciomCount);
+        Log.d("sender", "Broadcasting message: " + axciomR + " " + axciomG + " " + axciomB);
+        LocalBroadcastManager.getInstance(c).sendBroadcast(axciomIntent);
+
+>>>>>>> Stashed changes
     }
 }
 

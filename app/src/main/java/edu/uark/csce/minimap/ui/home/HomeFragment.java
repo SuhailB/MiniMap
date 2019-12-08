@@ -141,6 +141,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 //        rectOptions.fillColor(0);
 
 
+
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
         map.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
 
