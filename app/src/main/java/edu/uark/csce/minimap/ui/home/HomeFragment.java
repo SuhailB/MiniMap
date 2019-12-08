@@ -69,6 +69,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             RED = intent.getIntExtra("RED", 0);
             GREEN = intent.getIntExtra("GREEN", 0);
             BLUE = intent.getIntExtra("BLUE", 255);
+
+
             updateBuildingColor(map);
             Log.d("receiver", "Got message: " + RED + " " + GREEN + " " + BLUE);
         }
@@ -80,7 +82,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.ACTION));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
+        //LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);
 //        View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -131,15 +134,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         map.setBuildingsEnabled(true);
         if (areLocationPermissionsGranted())
             map.setMyLocationEnabled(true);
-//        PolygonOptions rectOptions = new PolygonOptions()
-//                .add(new LatLng(36.066417, -94.174103),
-//                        new LatLng(36.066524, -94.173799),
-//                        new LatLng(36.065930, -94.173419),
-//                        new LatLng(36.065628, -94.173467),
-//                        new LatLng(36.065704, -94.173987),
-//                        new LatLng(36.066270, -94.174011));
-//        rectOptions.fillColor(0);
-
 
 
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
@@ -156,8 +150,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 .build();                      // Creates a CameraPosition from the builder
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         updateBuildingColor(map);
-// Get back the mutable Polygon
-//        Polygon polygon = map.addPolygon(rectOptions);
 
     }
 

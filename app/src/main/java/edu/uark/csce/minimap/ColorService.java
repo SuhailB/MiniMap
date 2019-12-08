@@ -25,6 +25,7 @@ public class ColorService extends Service {
     int primeR, axciomR;
     int primeG, axciomG;
     int primeB, axciomB;
+    int primeCount, axciomCount;
     private Timer timer = new Timer();
     public static final String MY_PREFS_NAME = "RGB";
     final Context c = this;
@@ -78,6 +79,7 @@ public class ColorService extends Service {
                         primeR = values.get(0);
                         primeG = values.get(1);
                         primeB = values.get(2);
+                        primeCount = values.get(3);
                     }
                 },
                 new Response.ErrorListener() {
@@ -108,6 +110,7 @@ public class ColorService extends Service {
                         axciomR = values.get(0);
                         axciomG = values.get(1);
                         axciomB = values.get(2);
+                        axciomCount = values.get(3);
                     }
                 },
                 new Response.ErrorListener() {
@@ -153,6 +156,7 @@ public class ColorService extends Service {
         primeIntent.putExtra("RED", primeR);
         primeIntent.putExtra("GREEN", primeG);
         primeIntent.putExtra("BLUE", primeB);
+        primeIntent.putExtra("PRIMECOUNT", primeCount);
         Log.d("sender", "Broadcasting message: " + primeR + " " + primeG + " " + primeB);
         LocalBroadcastManager.getInstance(c).sendBroadcast(primeIntent);
     }
@@ -164,6 +168,7 @@ public class ColorService extends Service {
         axciomIntent.putExtra("RED", axciomR);
         axciomIntent.putExtra("GREEN", axciomG);
         axciomIntent.putExtra("BLUE", axciomB);
+        axciomIntent.putExtra("AXCIOMCOUNT", axciomCount);
         Log.d("sender", "Broadcasting message: " + axciomR + " " + axciomG + " " + axciomB);
         LocalBroadcastManager.getInstance(c).sendBroadcast(axciomIntent);
 
