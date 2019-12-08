@@ -62,6 +62,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     int GREEN;
     int BLUE;
 
+    int axciomRED, axciomGREEN, axciomBLUE;
+
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -69,8 +71,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             RED = intent.getIntExtra("RED", 0);
             GREEN = intent.getIntExtra("GREEN", 0);
             BLUE = intent.getIntExtra("BLUE", 255);
+            updateBuildingColor(map);
+            Log.d("receiver", "Got message: " + RED + " " + GREEN + " " + BLUE);
+        }
+    };
 
-
+    public BroadcastReceiver axciomReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            axciomRED = intent.getIntExtra("RED", 0);
+            axciomGREEN = intent.getIntExtra("GREEN", 0);
+            axciomBLUE = intent.getIntExtra("BLUE", 255);
             updateBuildingColor(map);
             Log.d("receiver", "Got message: " + RED + " " + GREEN + " " + BLUE);
         }
@@ -83,18 +95,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
-        //LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
-//        homeViewModel =
-//                ViewModelProviders.of(this).get(HomeViewModel.class);
-//        View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        final TextView textView = root.findViewById(R.id.text_home);
-////        homeViewModel.getText().observe(this, new Observer<String>() {
-////            @Override
-////            public void onChanged(@Nullable String s) {
-////                textView.setText(s);
-////            }
-////        });
-//        return root;
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(axciomReceiver, new IntentFilter(ColorService.AXCIOM));
         createBuildings();
         if(getArguments()!=null)
             position = getArguments().getInt("POS");
@@ -135,12 +136,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         if (areLocationPermissionsGranted())
             map.setMyLocationEnabled(true);
 
-
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
         map.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
 
 
-       map.moveCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(buildingLocation)      // Sets the center of the map to location user
@@ -150,7 +150,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 .build();                      // Creates a CameraPosition from the builder
         map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         updateBuildingColor(map);
-
     }
 
     public void updateBuildingColor(GoogleMap mMap)
@@ -159,10 +158,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
         mMap.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
         if (buildings[position].isHeatmapAvailable()) {
-
-            //Not finished here, need to get the color from the database.
-            int heatShade = Color.argb(150, RED, GREEN, BLUE);
-            int test = Color.rgb(2, 4, 155);
+            int heatShade;
+            heatShade = (buildings[position].getBuildingName() == "Mullins Library" ? Color.argb(150, axciomRED, axciomGREEN, axciomBLUE) : Color.argb(150,RED,GREEN,BLUE));
+            //Color.argb(150, RED, GREEN, BLUE);
             PolygonOptions polyOptions = new PolygonOptions()
                     .add(buildings[position].polygon)
                     .fillColor(heatShade);
@@ -174,16 +172,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     {
 
         LatLng[] MullinCoords = {   new LatLng(36.069150, -94.174346),
-                                    new LatLng(36.069178, -94.173322),
-                                    new LatLng(36.068206, -94.173303),
-                                    new LatLng(36.068206, -94.174300)};
+                new LatLng(36.069178, -94.173322),
+                new LatLng(36.068206, -94.173303),
+                new LatLng(36.068206, -94.174300)};
 
         LatLng[] JB_HuntCoords = {  new LatLng(36.066417, -94.174103),
-                                    new LatLng(36.066524, -94.173799),
-                                    new LatLng(36.065930, -94.173419),
-                                    new LatLng(36.065628, -94.173467),
-                                    new LatLng(36.065704, -94.173987),
-                                    new LatLng(36.066270, -94.174011)};
+                new LatLng(36.066524, -94.173799),
+                new LatLng(36.065930, -94.173419),
+                new LatLng(36.065628, -94.173467),
+                new LatLng(36.065704, -94.173987),
+                new LatLng(36.066270, -94.174011)};
         buildings = new Building[]{
                 new Building("Mullins Library", 36.0686,-94.1736, true, MullinCoords),
                 new Building("Brough Dining Hall", 36.0662, -94.1752, false),
