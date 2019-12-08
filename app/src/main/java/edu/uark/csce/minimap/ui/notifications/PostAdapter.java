@@ -51,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        storageReference = FirebaseStorage.getInstance().getReference("Image");
+        storageReference = FirebaseStorage.getInstance().getReference("Images");
         return new PostViewHolder(LayoutInflater.from(context).inflate(R.layout.cardview, parent,false));
     }
 
@@ -59,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull final PostViewHolder holder, int position) {
 
         holder.postText.setText(posts.get(position).getText());
+
 
 
         try {
