@@ -3,12 +3,9 @@ package edu.uark.csce.minimap;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -23,30 +20,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ColorService extends Service {
-<<<<<<< Updated upstream
-    int R;
-    int G;
-    int B;
-=======
     int primeR, axciomR;
     int primeG, axciomG;
     int primeB, axciomB;
-    int primeCount, axciomCount;
->>>>>>> Stashed changes
     private Timer timer = new Timer();
     public static final String MY_PREFS_NAME = "RGB";
     final Context c = this;
-    public static final String ACTION = "colorGrabber";
+    public static final String PRIME = "prime";
+    public static final String AXCIOM = "axciom";
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.e("Rest", "Testing the service out");
-        getJsonRequest();
-
+        getPrimeRequest();
 
         final Handler handler = new Handler();
         //Get Colors from JSON every minute
@@ -55,9 +44,11 @@ public class ColorService extends Service {
             @Override
             public void run()
             {
-                getJsonRequest();
-                sendMessage();
-			handler.postDelayed(this, 3000);
+                getPrimeRequest();
+                getAxciomRequest();
+                sendPrimeMessage();
+                sendAxciomMessage();
+                handler.postDelayed(this, 3000);
 
             }
         },0);  //the time is in miliseconds
@@ -70,7 +61,7 @@ public class ColorService extends Service {
     }
 
 
-    public void getJsonRequest()
+    public void getPrimeRequest()
     {
         String url = "http://10.5.54.42/db.json";
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -84,15 +75,9 @@ public class ColorService extends Service {
                         Log.e("Rest Response" , response.toString());
                         ArrayList<Integer> values = parseRGB(response.toString());
                         //heatmap = new Heatmap(values);
-<<<<<<< Updated upstream
-                        R = values.get(0);
-                        G = values.get(1);
-                        B = values.get(2);
-=======
                         primeR = values.get(0);
                         primeG = values.get(1);
                         primeB = values.get(2);
-                        primeCount = values.get(3);
                     }
                 },
                 new Response.ErrorListener() {
@@ -123,8 +108,6 @@ public class ColorService extends Service {
                         axciomR = values.get(0);
                         axciomG = values.get(1);
                         axciomB = values.get(2);
-                        axciomCount = values.get(3);
->>>>>>> Stashed changes
                     }
                 },
                 new Response.ErrorListener() {
@@ -163,9 +146,6 @@ public class ColorService extends Service {
 
     }
 
-<<<<<<< Updated upstream
-    private void sendMessage() {
-=======
     private void sendPrimeMessage() {
 
         Intent primeIntent = new Intent(PRIME);
@@ -173,29 +153,22 @@ public class ColorService extends Service {
         primeIntent.putExtra("RED", primeR);
         primeIntent.putExtra("GREEN", primeG);
         primeIntent.putExtra("BLUE", primeB);
-        primeIntent.putExtra("PRIMECOUNT", primeCount);
         Log.d("sender", "Broadcasting message: " + primeR + " " + primeG + " " + primeB);
         LocalBroadcastManager.getInstance(c).sendBroadcast(primeIntent);
     }
->>>>>>> Stashed changes
 
-        Intent intent = new Intent(ACTION);
+    private void sendAxciomMessage()
+    {
+        Intent axciomIntent = new Intent(AXCIOM);
         // You can also include some extra data.
-<<<<<<< Updated upstream
-        intent.putExtra("RED", R);
-        intent.putExtra("GREEN", G);
-        intent.putExtra("BLUE", B);
-        Log.d("sender", "Broadcasting message: " + R + " " + G + " " + B);
-        LocalBroadcastManager.getInstance(c).sendBroadcast(intent);
-=======
         axciomIntent.putExtra("RED", axciomR);
         axciomIntent.putExtra("GREEN", axciomG);
         axciomIntent.putExtra("BLUE", axciomB);
-        axciomIntent.putExtra("AXCIOMCOUNT", axciomCount);
         Log.d("sender", "Broadcasting message: " + axciomR + " " + axciomG + " " + axciomB);
         LocalBroadcastManager.getInstance(c).sendBroadcast(axciomIntent);
 
->>>>>>> Stashed changes
     }
+
+
 }
 
