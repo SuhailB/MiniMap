@@ -88,10 +88,10 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        storageReference = FirebaseStorage.getInstance().getReference("Image");
+        storageReference = FirebaseStorage.getInstance().getReference("Images");
         progressDialog = new ProgressDialog(getContext());
 
-        reference = FirebaseDatabase.getInstance().getReference("Image");
+        reference = FirebaseDatabase.getInstance().getReference("Images");
 
 
 
@@ -165,7 +165,6 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
                 long currentTime = System.currentTimeMillis();
                 if(!editText.getText().toString().isEmpty()) {
-                    uploadPost(currentTime);
                     uploadImage(currentTime);
 //                downloadImage(String.valueOf(currentTime));
                 }
@@ -241,7 +240,7 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null, null);
         databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
     }
-    private void uploadImage(long currentTime) {
+    private void uploadImage(final long currentTime) {
 
         if (currentPhotoPath != null) {
             currentPhotoPath = resizeAndCompressImageBeforeSend(getContext(), currentPhotoPath, currentTime + ".jpg");
@@ -256,6 +255,8 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
+                                uploadPost(currentTime);
+
                                 Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             }
                         });
