@@ -9,18 +9,10 @@
 
     <ImageView
         android:id="@+id/image_view_detail"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:src="@mipmap/ic_launcher"/>
-    <TextView
-        android:id="@+id/text_view_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="text content"
-        android:textColor="@android:color/black"
-        android:textSize="40sp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+
+        android:src="@mipmap/ic_launcher" />
 
 
 </LinearLayout>

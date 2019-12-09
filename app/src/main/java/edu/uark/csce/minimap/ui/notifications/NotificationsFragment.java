@@ -65,7 +65,7 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     PostAdapter postAdapter;
     private ProgressDialog progressDialog;
     private FloatingActionButton floatingActionButton;
-    private Button send;
+    private ImageView send;
     private EditText editText;
 
     private DatabaseReference databaseReference;
@@ -88,10 +88,10 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        storageReference = FirebaseStorage.getInstance().getReference("Image");
+        storageReference = FirebaseStorage.getInstance().getReference("Images");
         progressDialog = new ProgressDialog(getContext());
 
-        reference = FirebaseDatabase.getInstance().getReference("Image");
+        reference = FirebaseDatabase.getInstance().getReference("Images");
 
 
 
@@ -102,35 +102,34 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
                 for(DataSnapshot childSnapshot: dataSnapshot.getChildren())
                 {
+                    //get the post object
                     final Post p = childSnapshot.getValue(Post.class);
-                    try {
-                        StorageReference ref = storageReference.child(p.getTime() + ".jpg");
-                        final File localFile = File.createTempFile("images", "jpg");
-                        ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                p.setFile(localFile);
-//                                my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-//                                p.setImage(my_image);
-//                                Toast.makeText(getContext(), "image bitmap to post instance", Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+
+//                    //try to get the post image
+//                    try {
+//                        StorageReference ref = storageReference.child(p.getTime() + ".jpg");
+//                        final File localFile = File.createTempFile("images", "jpg");
+//                        ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                            @Override
+//                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+//                                p.setFile(localFile);
+//                            }
+//                        }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
 //                                Toast.makeText(getContext(), "Download Failed", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }catch(IOException e){
-                        Toast.makeText(getContext(), "File Failed", Toast.LENGTH_LONG).show();
-                    }
+//                            }
+//                        });
+//                    }catch(IOException e){
+//                        Toast.makeText(getContext(), "File Failed", Toast.LENGTH_LONG).show();
+//                    }
+
                     list.add(p);
-
-
-
                 }
                 postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
                 recyclerView.setAdapter(postAdapter);
                 postAdapter.setOnItemClickListener(NotificationsFragment.this);
+
             }
 
             @Override
@@ -158,17 +157,18 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         editText = (EditText) root.findViewById(R.id.editText);
-        send = (Button) root.findViewById(R.id.send);
+        send = (ImageView) root.findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
 
                 long currentTime = System.currentTimeMillis();
-                if(!editText.getText().toString().isEmpty()) {
+
                     uploadPost(currentTime);
                     uploadImage(currentTime);
-//                downloadImage(String.valueOf(currentTime));
-                }
+                    editText.getText().clear();
+
+
             }
         });
 
@@ -239,7 +239,7 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     private void uploadPost(long currentTime){
         String postText = editText.getText().toString();
         Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null, null);
-        databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
+        databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
     }
     private void uploadImage(long currentTime) {
 
@@ -256,6 +256,9 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
+                                postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
+                                recyclerView.setAdapter(postAdapter);
+                                postAdapter.setOnItemClickListener(NotificationsFragment.this);
                                 Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -265,6 +268,7 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
             }
         }
+        currentPhotoPath = null;
     }
 
 //    private void downloadImage(String currentTime) {
@@ -390,6 +394,8 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
     @Override
     public void onItemClick(int position) {
+
+
         Intent detailIntent = new Intent(getContext(), DetailActivity.class);
         Post clickedPost = list.get(position);
 

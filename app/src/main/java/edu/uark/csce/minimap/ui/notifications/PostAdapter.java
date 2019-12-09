@@ -51,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        storageReference = FirebaseStorage.getInstance().getReference("Image");
+        storageReference = FirebaseStorage.getInstance().getReference("Images");
         return new PostViewHolder(LayoutInflater.from(context).inflate(R.layout.cardview, parent,false));
     }
 
@@ -68,14 +68,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    holder.image.setImageBitmap(my_image);
-                    Toast.makeText(context, "Download Succeeded", Toast.LENGTH_LONG).show();
+                    holder.postImage.setImageBitmap(my_image);
+                    Toast.makeText(context, "Image downloaded", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    holder.image.getLayoutParams().width = 0;
-                    Toast.makeText(context, "Download Failed", Toast.LENGTH_LONG).show();
+                    holder.postImage.getLayoutParams().width = 0;
+                    Toast.makeText(context, "Image download Failed", Toast.LENGTH_LONG).show();
                 }
             });
         }catch(IOException e){
@@ -96,13 +96,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     class PostViewHolder extends RecyclerView.ViewHolder
     {
         TextView postText;
-        ImageView image;
+        ImageView postImage;
 
         public PostViewHolder(View itemView){
             super(itemView);
             postText = (TextView) itemView.findViewById(R.id.postText);
-//            imageURL = (TextView) itemView.findViewById(R.id.email);
-            image = (ImageView) itemView.findViewById(R.id.profilePic);
+            postImage = (ImageView) itemView.findViewById(R.id.profilePic);
 
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override

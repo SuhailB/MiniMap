@@ -35,12 +35,12 @@ public class DetailActivity extends AppCompatActivity {
         File file = (File)getIntent().getExtras().get(EXTRA_FILE);
 
         ImageView imageView = findViewById(R.id.image_view_detail);
-        TextView textView = findViewById(R.id.text_view_detail);
+//        TextView textView = findViewById(R.id.text_view_detail);
 
         //Picasso.get().load(imageUrl).into(imageView);
 
        // Picasso.get().load(image).into(imageView);
-        textView.setText(textContent);
+//        textView.setText(textContent);
 
         if(file != null){
             my_image = BitmapFactory.decodeFile(file.getAbsolutePath());

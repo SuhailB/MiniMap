@@ -15,46 +15,59 @@
         app:layout_constraintBottom_toTopOf="@id/fabtn_addition"
         />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#FF9D2235"
+        android:ems="10"
+        android:hint="Text Message"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/send"
+        app:layout_constraintHorizontal_weight="8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabtn_addition"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_action_addition"
             app:backgroundTint="@color/androidGreen"
+            android:src="@drawable/ic_camera_alt_black_24dp"
             />
+<!--        <Button-->
+<!--            android:id="@+id/send"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            app:backgroundTint="@color/androidGreen"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/fabtn_addition"-->
+<!--            app:layout_constraintHorizontal_weight="1.4"-->
+<!--            app:layout_constraintStart_toEndOf="@id/editText"-->
+<!--            android:drawableStart="@drawable/ic_send_black_24dp"-->
+<!--            />-->
 
-
-        <EditText
-            android:id="@+id/editText"
+        <ImageView
+            android:id="@+id/send"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            app:layout_constraintHorizontal_weight="4"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/send"
+            app:layout_constraintEnd_toStartOf="@id/fabtn_addition"
+            app:layout_constraintHorizontal_weight="1.4"
+            app:layout_constraintStart_toEndOf="@id/editText"
+            android:src="@drawable/ic_send_black_24dp"
             />
-
-    <Button
-        android:id="@+id/send"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="->"
-        app:layout_constraintHorizontal_weight="1"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintStart_toEndOf="@id/editText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fabtn_addition"
-        />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
