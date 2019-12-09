@@ -162,9 +162,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             if (buildings[i].isHeatmapAvailable()) {
                 int heatShade = 0;
                 if(buildings[i].getBuildingName() == "Mullins Library"){
-                    heatShade = Color.argb(150, RED, GREEN, BLUE)+10;
-                }else if(buildings[i].getBuildingName() == "JB-Hunt"){
                     heatShade = Color.argb(150, axciomRED, axciomGREEN, axciomBLUE);
+                }else if(buildings[i].getBuildingName() == "JB-Hunt"){
+                    heatShade = Color.argb(150, RED, GREEN, BLUE);
                 }
 
                 //Color.argb(150, RED, GREEN, BLUE);
