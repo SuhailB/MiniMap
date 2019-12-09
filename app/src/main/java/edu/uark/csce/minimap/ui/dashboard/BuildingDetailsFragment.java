@@ -79,11 +79,15 @@ public class BuildingDetailsFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         position = getArguments().getInt("POS");
+        textView = (TextView) view.findViewById(R.id.people_count);
+        textView.setText("");
         Log.e("POSITION", Integer.toString(position));
         if(position == 0)
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
-        else
+        else if(position == 2)
             LocalBroadcastManager.getInstance(getActivity()).registerReceiver(axciomReceiver, new IntentFilter(ColorService.AXCIOM));
+        else
+            textView.setText("No HeatMap for this Building");
         // Get field from view
         bviewMap = (Button) view.findViewById(R.id.mapButton);
         bviewMap.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +100,8 @@ public class BuildingDetailsFragment extends DialogFragment {
 
             }
         });
-        textView = (TextView) view.findViewById(R.id.people_count);
-        textView.setText(count+" People");
+
+
 
 
     }
