@@ -27,11 +27,24 @@ public class BuildingDetailsFragment extends DialogFragment {
     private Button bviewMap;
     private int count;
     private TextView textView;
+    int position;
     public BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Get extra data included in the Intent
             count = intent.getIntExtra("PRIMECOUNT", 0);
+
+            textView.setText(count +" People");
+//            updateBuildingColor(map);
+            Log.e("receiver", "Got message: " + count);
+        }
+    };
+
+    public BroadcastReceiver axciomReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            count = intent.getIntExtra("AXCIOMCOUNT", 0);
 
             textView.setText(count +" People");
 //            updateBuildingColor(map);
@@ -57,8 +70,6 @@ public class BuildingDetailsFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
-       // LocalBroadcastManager.getInstance(getActivity()).registerReceiver(, new IntentFilter(ColorService.AXCIOM));
 
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return inflater.inflate(R.layout.building_details_fragment, container, false);
@@ -67,7 +78,12 @@ public class BuildingDetailsFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final int position = getArguments().getInt("POS");
+        position = getArguments().getInt("POS");
+        Log.e("POSITION", Integer.toString(position));
+        if(position == 0)
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mMessageReceiver, new IntentFilter(ColorService.PRIME));
+        else
+            LocalBroadcastManager.getInstance(getActivity()).registerReceiver(axciomReceiver, new IntentFilter(ColorService.AXCIOM));
         // Get field from view
         bviewMap = (Button) view.findViewById(R.id.mapButton);
         bviewMap.setOnClickListener(new View.OnClickListener() {
