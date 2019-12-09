@@ -137,10 +137,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             map.setMyLocationEnabled(true);
 
         LatLng buildingLocation = new LatLng(buildings[position].getLatitude(), buildings[position].getLongitude());
-        map.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
+//        map.addMarker(new MarkerOptions().position(buildingLocation).title(buildings[position].getBuildingName()));
 
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(buildingLocation, 13));
+
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(buildingLocation)      // Sets the center of the map to location user
@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 .bearing(0)                    // Sets the orientation of the camera to east
                 .tilt(0)                       // Sets the tilt of the camera to 30 degrees
                 .build();                      // Creates a CameraPosition from the builder
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(36.067243, -94.174592), 16));
         updateBuildingColor(map);
     }
 
@@ -162,7 +162,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             if (buildings[i].isHeatmapAvailable()) {
                 int heatShade = 0;
                 if(buildings[i].getBuildingName() == "Mullins Library"){
-                    heatShade = Color.argb(150, RED, GREEN, BLUE)+10;
+                    heatShade = Color.argb(150, RED, GREEN, BLUE);
                 }else if(buildings[i].getBuildingName() == "JB-Hunt"){
                     heatShade = Color.argb(150, axciomRED, axciomGREEN, axciomBLUE);
                 }

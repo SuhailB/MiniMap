@@ -76,10 +76,10 @@ public class ColorService extends Service {
                         Log.e("Rest Response" , response.toString());
                         ArrayList<Integer> values = parseRGB(response.toString());
                         //heatmap = new Heatmap(values);
-                        primeR = values.get(0);
+                        primeR = values.get(0)+200;
                         primeG = values.get(1);
                         primeB = values.get(2);
-                        primeCount = values.get(3);
+                        primeCount = values.get(3)+50;
                     }
                 },
                 new Response.ErrorListener() {
@@ -110,7 +110,7 @@ public class ColorService extends Service {
                         axciomR = values.get(0);
                         axciomG = values.get(1);
                         axciomB = values.get(2);
-                        axciomCount = values.get(3);
+                        axciomCount = values.get(3)+5;
                     }
                 },
                 new Response.ErrorListener() {

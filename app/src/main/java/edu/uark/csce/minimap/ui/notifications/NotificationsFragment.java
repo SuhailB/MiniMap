@@ -144,8 +144,8 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
                 if(currentPhotoPath!=null)
                     uploadImage(currentTime);
-                else
-                    uploadPost(currentTime);
+                else if(!editText.getText().toString().isEmpty())
+                    uploadPost(currentTime, false);
 
             }
         });
@@ -220,10 +220,14 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     }
 
 
-    private void uploadPost(long currentTime){
+    private void uploadPost(long currentTime, boolean hasImage){
 
         String postText = editText.getText().toString();
-        Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null, null);
+        Post post;
+        if(hasImage)
+            post = new Post(postText, currentTime, String.valueOf(currentTime), "exist", null, null);
+        else
+            post = new Post(postText, currentTime, String.valueOf(currentTime), "null", null, null);
         databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
         editText.getText().clear();
     }
@@ -243,70 +247,16 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
-                                uploadPost(currentTime);
+                                uploadPost(currentTime, true);
                                 updateListView();
-                                Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             }
                         });
-            } else {
-
-                Toast.makeText(getContext(), "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
-
             }
         }
         currentPhotoPath = null;
     }
 
-//    private void downloadImage(String currentTime) {
-//
-////            progressDialog.setTitle("Image is Downloading...");
-////            progressDialog.show();
-//            try {
-//                StorageReference ref = storageReference.child(currentTime + ".jpg");
-//                final File localFile = File.createTempFile("image", "jpg");
-//                ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-//                        imageView.setImageBitmap(my_image);
-//                        Toast.makeText(getActivity(), "Download Succeeded", Toast.LENGTH_LONG).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getActivity(), "Download Failed", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }catch(IOException e){
-//                Toast.makeText(getActivity(), "File Failed", Toast.LENGTH_LONG).show();
-//
-//            }
-//        }
-//
-//    private void downloadImage(String currentTime) {
-//
-////            progressDialog.setTitle("Image is Downloading...");
-////            progressDialog.show();
-//            try {
-//                StorageReference ref = storageReference.child(currentTime + ".jpg");
-//                final File localFile = File.createTempFile("images", "jpg");
-//                ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-//                        imageView.setImageBitmap(my_image);
-//                        Toast.makeText(getActivity(), "Download Succeeded", Toast.LENGTH_LONG).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getActivity(), "Download Failed", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }catch(IOException e){
-//                Toast.makeText(getActivity(), "File Failed", Toast.LENGTH_LONG).show();
-//            }
-//    }
 
     public static String resizeAndCompressImageBeforeSend(Context context, String filePath, String fileName){
         final int MAX_IMAGE_SIZE = 700 * 1024; // max final file size in kilobytes
@@ -385,13 +335,10 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
         Intent detailIntent = new Intent(getContext(), DetailActivity.class);
         Post clickedPost = list.get(position);
 
-        detailIntent.putExtra(EXTRA_IMAGE_URL, clickedPost.getImageURL());
-//        detailIntent.putExtra(EXTRA_IMAGE, clickedPost.getImage());
-        detailIntent.putExtra(EXTRA_FILE, clickedPost.getFile());
-
-        detailIntent.putExtra(EXTRA_TEXT_CONTENT, clickedPost.getText());
-
-        startActivity(detailIntent);
+        if(clickedPost.getImageURL().equals("exist")) {
+            detailIntent.putExtra("ImageName", clickedPost.getImageName());
+            startActivity(detailIntent);
+        }
 
     }
 }

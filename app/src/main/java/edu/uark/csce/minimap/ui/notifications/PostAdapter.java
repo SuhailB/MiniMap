@@ -70,17 +70,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     my_image = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                     holder.postImage.setImageBitmap(my_image);
-                    Toast.makeText(context, "Image downloaded", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "Image downloaded", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     holder.postImage.getLayoutParams().width = 0;
-                    Toast.makeText(context, "Image download Failed", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "Image download Failed", Toast.LENGTH_LONG).show();
                 }
             });
         }catch(IOException e){
-            Toast.makeText(context, "File Failed", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "File Failed", Toast.LENGTH_LONG).show();
         }
 
 //        holder.imageURL.setText(posts.get(position).getImageURL());
