@@ -61,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.postText.setText(posts.get(position).getText());
 
 
+
         try {
             StorageReference ref = storageReference.child(posts.get(position).getTime() + ".jpg");
             final File localFile = File.createTempFile("images", "jpg");
