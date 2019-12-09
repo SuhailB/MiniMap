@@ -125,8 +125,6 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                     }
                     list.add(p);
 
-
-
                 }
                 postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
                 recyclerView.setAdapter(postAdapter);
@@ -238,7 +236,7 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     private void uploadPost(long currentTime){
         String postText = editText.getText().toString();
         Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null, null);
-        databaseReference.child("Image").child(String.valueOf(currentTime)).setValue(post);
+        databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
     }
     private void uploadImage(final long currentTime) {
 
