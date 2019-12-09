@@ -104,31 +104,9 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                 {
                     //get the post object
                     final Post p = childSnapshot.getValue(Post.class);
-
-//                    //try to get the post image
-//                    try {
-//                        StorageReference ref = storageReference.child(p.getTime() + ".jpg");
-//                        final File localFile = File.createTempFile("images", "jpg");
-//                        ref.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                            @Override
-//                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                                p.setFile(localFile);
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Toast.makeText(getContext(), "Download Failed", Toast.LENGTH_LONG).show();
-//                            }
-//                        });
-//                    }catch(IOException e){
-//                        Toast.makeText(getContext(), "File Failed", Toast.LENGTH_LONG).show();
-//                    }
-
                     list.add(p);
                 }
-                postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
-                recyclerView.setAdapter(postAdapter);
-                postAdapter.setOnItemClickListener(NotificationsFragment.this);
+                updateListView();
 
             }
 
@@ -164,10 +142,10 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
                 long currentTime = System.currentTimeMillis();
 
-                    uploadPost(currentTime);
+                if(currentPhotoPath!=null)
                     uploadImage(currentTime);
-                    editText.getText().clear();
-
+                else
+                    uploadPost(currentTime);
 
             }
         });
@@ -181,6 +159,12 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
     }
 
 
+    public void updateListView() {
+        postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
+        recyclerView.setAdapter(postAdapter);
+        postAdapter.setOnItemClickListener(NotificationsFragment.this);
+        recyclerView.scrollToPosition(list.size() - 1);
+    }
 
     //this function is used to take a new photo after creating a file for it.
     private void dispatchTakePicIntent() throws IOException {
@@ -237,11 +221,14 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
 
 
     private void uploadPost(long currentTime){
+
         String postText = editText.getText().toString();
         Post post = new Post(postText, currentTime, String.valueOf(currentTime), "urlll", null, null);
         databaseReference.child("Images").child(String.valueOf(currentTime)).setValue(post);
+        editText.getText().clear();
     }
-    private void uploadImage(long currentTime) {
+    private void uploadImage(final long currentTime) {
+
 
         if (currentPhotoPath != null) {
             currentPhotoPath = resizeAndCompressImageBeforeSend(getContext(), currentPhotoPath, currentTime + ".jpg");
@@ -256,9 +243,8 @@ public class NotificationsFragment extends Fragment implements PostAdapter.OnIte
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
-                                postAdapter = new PostAdapter(NotificationsFragment.this.getActivity(), list);
-                                recyclerView.setAdapter(postAdapter);
-                                postAdapter.setOnItemClickListener(NotificationsFragment.this);
+                                uploadPost(currentTime);
+                                updateListView();
                                 Toast.makeText(getContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             }
                         });
